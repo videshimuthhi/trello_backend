@@ -1,34 +1,40 @@
-# Trello Backend
+# Project Management API
 
-A backend service for a Trello-like task management application.
-
-## Overview
-
-This project provides the server-side implementation for a task management and collaboration tool inspired by Trello. It handles user authentication, board management, card organization, and real-time updates.
+A RESTful API backend for a project management system built with Express.js, MongoDB, and TypeScript. This API enables users to manage organizations, boards, issues, and user accounts with role-based access control and JWT authentication.
 
 ## Features
 
-- User authentication and authorization
-- Board creation and management
-- Card and task management
-- List organization
-- Collaboration features
-- Real-time updates
+- **User Management**: Create and manage user accounts with secure password hashing
+- **Authentication**: JWT-based authentication and authorization
+- **Organization Management**: Create and manage organizations
+- **Board Management**: Create and manage project boards within organizations
+- **Issue Tracking**: Create, update, and manage issues across boards
+- **Role-Based Access Control**: Admin and user middleware for access control
+- **Input Validation**: Zod-based schema validation for all API inputs
 
-## Getting Started
+## Tech Stack
 
-### Prerequisites
+- **Runtime**: Node.js
+- **Framework**: Express.js 5.x
+- **Language**: TypeScript
+- **Database**: MongoDB with Mongoose
+- **Authentication**: JWT (jsonwebtoken)
+- **Password Hashing**: bcrypt
+- **Validation**: Zod
+- **Environment**: dotenv
 
-- Node.js (v14 or higher)
-- npm or yarn package manager
-- MongoDB or your configured database
+## Prerequisites
 
-### Installation
+- Node.js (v18 or higher recommended)
+- npm or yarn
+- MongoDB (local or cloud instance, e.g., MongoDB Atlas)
+
+## Installation
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/videshimuthhi/trello_backend.git
-cd trello_backend
+git clone "repo url"
+cd Trello
 ```
 
 2. Install dependencies:
@@ -36,107 +42,110 @@ cd trello_backend
 npm install
 ```
 
-3. Set up environment variables:
-Create a `.env` file in the root directory with the following variables:
-```
-PORT=5000
-DATABASE_URL=your_database_url
-JWT_SECRET=your_jwt_secret
-NODE_ENV=development
+3. Create a `.env` file in the root directory with the following environment variables:
+```env
+PORT=3001
+MONGODB_URL=mongodb://localhost:27017/yourdb
+userSecret=your_jwt_secret_key
 ```
 
-4. Start the development server:
+## Getting Started
+
+### Development
+
+Start the development server:
 ```bash
 npm run dev
 ```
 
+The server will start on `http://localhost:3001` (or the port specified in `.env`).
+
+### Build
+
+To compile TypeScript to JavaScript:
+```bash
+npx tsc -b
+```
+
+The compiled files will be in the `dist` folder.
+
+## API Routes
+
+### Users (`/users`)
+- Create, read, update, and delete user accounts
+- User authentication and profile management
+
+### Organizations (`/organization`)
+- Manage organizations and their settings
+- Organization-level operations
+
+### Boards (`/boards`)
+- Create and manage project boards
+- Board-specific operations
+
+### Issues (`/issues`)
+- Create and manage issues/tasks
+- Issue tracking and updates
+
 ## Project Structure
 
 ```
-trello_backend/
-├── src/
-│   ├── controllers/
-│   ├── routes/
-│   ├── models/
-│   ├── middleware/
-│   └── utils/
-├── tests/
-├── .env
-├── .gitignore
-├── package.json
-└── README.md
+src/
+├── controllers/        # Request handlers
+│   ├── user.controller.ts
+│   ├── organization.controller.ts
+│   ├── board.controller.ts
+│   └── issue.controller.ts
+├── routes/            # API route definitions
+│   ├── user.route.ts
+│   ├── organization.route.ts
+│   ├── board.route.ts
+│   └── issue.route.ts
+├── services/          # Business logic
+│   └── organization.service.ts
+├── middlewares/       # Express middlewares
+│   ├── authMiddleware.ts
+│   └── adminMiddleware.ts
+├── validators/        # Input validation schemas
+│   └── z.ts
+├── db.ts             # Database connection setup
+├── env.ts            # Environment variables schema
+├── types.d.ts        # Type definitions
+└── index.ts          # Application entry point
 ```
 
-## API Endpoints
+## Environment Variables
 
-### Users
-- `POST /api/auth/register` - Register a new user
-- `POST /api/auth/login` - Login user
-- `GET /api/users/:id` - Get user profile
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `PORT` | Server port (default: 3001) | No |
+| `MONGODB_URL` | MongoDB connection string | Yes |
+| `userSecret` | JWT secret key for token signing | Yes |
 
-### Boards
-- `GET /api/boards` - Get all boards
-- `POST /api/boards` - Create a new board
-- `GET /api/boards/:id` - Get board details
-- `PUT /api/boards/:id` - Update board
-- `DELETE /api/boards/:id` - Delete board
+## Authentication
 
-### Cards
-- `GET /api/cards` - Get all cards
-- `POST /api/cards` - Create a new card
-- `PUT /api/cards/:id` - Update card
-- `DELETE /api/cards/:id` - Delete card
+The API uses JWT (JSON Web Tokens) for authentication. Include the token in the `token` header:
 
-## Development
-
-### Running Tests
-
-```bash
-npm test
+```
+token: <your_jwt_token>
 ```
 
-### Code Style
+## Middleware
 
-This project uses ESLint and Prettier for code formatting. Run:
+- **authMiddleware**: Verifies JWT tokens and authenticates requests
+- **adminMiddleware**: Restricts access to admin-only endpoints
 
-```bash
-npm run lint
-npm run format
-```
+## Development Notes
 
-## Building for Production
-
-```bash
-npm run build
-npm start
-```
-
-## Technologies Used
-
-- **Node.js** - Runtime environment
-- **Express.js** - Web framework
-- **MongoDB** - Database
-- **JWT** - Authentication
-- **Mongoose** - MongoDB ODM
-
-## Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+- The project uses ES modules (`"type": "module"` in package.json)
+- TypeScript is configured for strict type checking
+- Input validation is enforced using Zod schemas
+- Passwords are hashed using bcrypt before storage
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+ISC
 
-## Support
+## Author
 
-For support, email support@example.com or open an issue in the repository.
-
-## Changelog
-
-All notable changes to this project are documented in the [CHANGELOG.md](./CHANGELOG.md) file.
+Dhruv
